@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="form math">
+        <div class="form__inputs">
+            <label for="math__input-a">Первый операнд:</label>
+            <input type="text" id="math__input-a" value="20">
+            <label for="math__input-a">Второй операнд:</label>
+            <input type="text" id="math__input-b" value="10">
+        </div>
+        <div class="form__output" id="math__output"></div>
+        <div class="form__actions">
+            <button id="math__action-sum">+</button>
+            <button id="math__action-dif">-</button>
+            <button id="math__action-mul">*</button>
+            <button id="math__action-div">/</button>
+        </div>
+    </div>
+
+    <div class="form logic">
+        <div class="form__inputs">
+            <label for="math__input-a">Первый операнд:</label>
+            <div class="form__input">
+                <input type="checkbox" id="logic__input-a" value="20">
+            </div>
+            <label for="math__input-a">Второй операнд:</label>
+            <div class="form__input">
+                <input type="checkbox" id="logic__input-b" value="10">
+            </div>
+        </div>
+        <div class="form__output" id="logic__output"></div>
+        <div class="form__actions">
+            <button id="logic__action-and">и</button>
+            <button id="logic__action-or">или</button>
+            <button id="logic__action-no-a">не первый</button>
+            <button id="logic__action-no-b">не второй</button>
+        </div>
+    </div>
+    <div class="more" id="more">
+        <input type="text" id="more__input">
+        <div id="more__output"></div>
+        <a id="more__link" href="https://www.google.com/">Ссылка на Google</a>
+    </div>
+    <script>
+        const elm = document.getElementById("more__input");
+        const out = document.getElementById("more__output");
+        const link = document.getElementById("more__link");
+        const more = document.getElementById("more");
+
+        if(!elm){
+            console.error("#more__input is", undefined);
+        }
+        
+        elm.onmouseenter = () => {
+            elm.classList.add("more__input_active");
+        }
+
+        elm.onmouseleave = () => {
+            elm.classList.remove("more__input_active");
+        }
+
+        elm.onfocus = () => {
+            out.innerText = "в фокусе";
+        }
+
+        elm.onblur = () => {
+            out.innerText = "без фокуса";
+        }
+
+        link.onclick = (event) => {
+            event.preventDefault();                         // предотвращаем действия браузера по умолчанию
+            event.stopPropagation();                        // останваливаем всплытие события
+            alert("Но перехода по ссылке не будет");
+        }
+
+        more.onclick = (event) => {
+            console.log(event)
+        }
+    </script>
+    <script src="./script.js"></script>
+</body>
+</html>
