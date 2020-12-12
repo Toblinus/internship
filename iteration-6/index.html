@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iteration-6</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <p id="current-location"></p>
+    <p id="history">
+        <button id="history__back">back</button>
+        <input type="text" id="history__input">
+        <button id="history__add">add</button>
+    </p>
+    <p id="show-alert">
+        <input type="text" id="show-alert__input">
+        <button id="show-alert__btn">Show alert</button>
+    </p>
+    <p id="save-data">
+        <input type="radio" name="storageType" id="localStorage" checked>
+        <label for="localStorage">Local Storage</label>
+        <input type="radio" name="storageType" id="sessionStorage">
+        <label for="sessionStorage">Session Storage</label>
+        <p>
+            <label for="save-data__key">Key</label>
+            <input type="text" id="save-data__key">
+        </p>
+        <p>
+            <label for="save-data__value">Value</label>
+            <input type="text" id="save-data__value">
+        </p>
+        <p>
+            <button id="storage__save">Save</button>
+            <button id="storage__load">Load</button>
+            <button id="storage__del">Remove</button>
+            <button id="storage__clear">Clear</button>
+        </p>
+    </p>
+    <script src="./script.js"></script>
+</body>
+</html>
