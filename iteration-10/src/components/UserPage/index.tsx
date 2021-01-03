@@ -12,12 +12,12 @@ type propsType = {
 
 const UserPage: FC<propsType> = function(props){
     const [status, data] = useLoader(
-        GHConnector.getUser(props.username), 
+        () => GHConnector.getUser(props.username), 
         [props.username]
     );
 
     const [reposStatus, reposData] = useLoader(
-        GHConnector.getRepos(props.username),
+        () => GHConnector.getRepos(props.username),
         [props.username]
     );
 

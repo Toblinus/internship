@@ -7,12 +7,12 @@ export enum StatusLoader {
     notContent
 }
 
-export const useLoader = <T>(api: Promise<T>, dep?: DependencyList): [StatusLoader, T] => {
+export const useLoader = <T>(api: () => Promise<T>, dep?: DependencyList): [StatusLoader, T] => {
     const [status, setStatus] = useState(StatusLoader.loading);
     const [data, setData] = useState<T>(null);
 
     useEffect(() => {
-        api
+        api()
         .then((response) => {
             if(response){
                 setData(response);
