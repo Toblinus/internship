@@ -1,0 +1,15 @@
+.propmpt-input {
+    display: flex;
+    margin: 2rem 0;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    position: sticky;
+}
+
+.propmpt-input__input {
+    width: 100%;
+    margin-right: 20px;
+    padding: 5px 10px;
+    font-size: 1.5rem;
+}

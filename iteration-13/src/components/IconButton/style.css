@@ -1,0 +1,25 @@
+.icon-button {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    border: 3px solid;
+    padding: 3px;
+}
+
+.icon-button_add {
+    background: green;
+    border-color: rgb(0, 100, 0);
+}
+
+.icon-button_remove {
+    background: red;
+    border-color: rgb(100, 0, 0);
+}
+
+.icon-button:hover {
+    transform: scale(1.1);
+}
+
+.icon-button:active {
+    transform: scale(.9);
+}
