@@ -18,8 +18,9 @@
 
 .card:hover { 
     transform: translate(-3px, -3px);
-    box-shadow: 1px 2px 6px 0 #8080808c;
+    box-shadow: 4px 5px 5px 0 #8080808c;
 }
+
 
 .card:active {
     transform: translate(0);

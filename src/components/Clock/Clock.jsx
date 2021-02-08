@@ -29,9 +29,13 @@ const Clock = ({ h, m, s, pathImg }) => {
 
 
 Clock.propTypes = {
+    /** Часы */
     h: PropType.number.isRequired,
+    /** Минуты */
     m: PropType.number.isRequired,
+    /** Секунды */
     s: PropType.number.isRequired,
+    /** Ссылка на фоновое изображение */
     pathImg: PropType.string
 }
 

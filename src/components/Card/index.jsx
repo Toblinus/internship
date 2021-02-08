@@ -15,7 +15,13 @@ const Card = ({ header, text, className }) => {
 }
 
 Card.propTypes = {
+    /**
+     * Заголовок задачи
+     */
     header: PropTypes.string.isRequired,
+    /**
+     * Текст задачи
+     */
     text: PropTypes.string
 }
 

@@ -8,8 +8,8 @@ export default {
 
 const Template = (args) => <Card {...args} />
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Default = Template.bind({});
+Default.args = {
     header: 'title',
     text: ''
 }

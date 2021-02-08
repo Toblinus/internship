@@ -8,8 +8,8 @@ export default {
 
 const Template = (args) => <CardList {...args} />
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Default = Template.bind({});
+Default.args = {
     header: 'Испытательный срок',
     tasks: [
         {
