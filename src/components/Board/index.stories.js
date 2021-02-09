@@ -5,22 +5,22 @@ import CardList from '../CardList';
 export default {
     title: 'Trello/Board',
     component: Board,
-    argTypes: {
-        children: {
-            control: {
-                type: 'text',
-                // subControls: {
-                //     json: {
-                //         type: 'text'
-                //     }
-                // },
-                resolve: (props) => {
-                    console.log(props);
-                    return 'sfd';
-                }
-            }
-        }
-    }
+    // argTypes: {
+    //     children: {
+    //         control: {
+    //             type: 'text',
+    //             // subControls: {
+    //             //     json: {
+    //             //         type: 'text'
+    //             //     }
+    //             // },
+    //             resolve: (props) => {
+    //                 console.log(props);
+    //                 return 'sfd';
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 const Template = (args) => <Board {...args} />

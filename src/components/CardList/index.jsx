@@ -24,7 +24,7 @@ CardList.propTypes = {
      * Cписко задач 
      */
     tasks: PropTypes.arrayOf(
-        PropTypes.shape({
+        PropTypes.exact({
             header: PropTypes.string.isRequired,
             text: PropTypes.string
         })
