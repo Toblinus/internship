@@ -25,4 +25,8 @@ WrapperWithButtons.propTypes = {
     }))
 }
 
+WrapperWithButtons.defaultProps = {
+    buttons: []
+}
+
 export default WrapperWithButtons;

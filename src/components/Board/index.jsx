@@ -7,13 +7,14 @@ import './style.css';
 
 
 const Board = ({ children, className }) => {
+    console.log(children);
     return (<div className={joinClasses("board", className)}>
-            { children.length ? children : 'Пусто' }
+            { children.length || !Array.isArray(children) ? children : 'Пусто' }
     </div>);
 }
 
 Board.propTypes = {
-    children: PropTypes.arrayOf(PropTypes.instanceOf(CardList))
+    children: PropTypes.node
 }
 
 Board.defaultProps = {
