@@ -3,29 +3,24 @@
     margin: 0;
 }
 
-/* \E925 */
-
 .card {
-    background: aliceblue;
+    background: #fdfdfd;
     padding: 10px 20px;
     border-radius: 8px;
     border: 1px solid #8080803d;
     box-shadow: 0 0 0 0 gray;
     cursor: pointer;
-    transition: all ease .1s;
+    transition: all ease .2s;
     box-sizing: border-box;
 }
 
 .card:hover { 
-    transform: translate(-3px, -3px);
-    box-shadow: 4px 5px 5px 0 #8080808c;
+    background: rgb(231, 231, 231);
 }
 
 
 .card:active {
-    transform: translate(0);
-    box-shadow: none;
-
+    background: rgb(190, 187, 187);
 }
 
 .card__header {

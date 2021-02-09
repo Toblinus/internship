@@ -1,0 +1,35 @@
+.wrap-with-btns {
+    position: relative;
+    width: auto;
+}
+
+.wrap-with-btns__content {
+    width: auto;
+}
+
+.wrap-with-btns__buttons {
+    position: absolute;
+    z-index: 9;
+    right: 0;
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 5px;
+}
+
+.wrap-with-btns__button {
+    display: block;
+    outline: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 0;
+}
+
+.wrap-with-btns__button:hover {
+    background: rgba(180, 180, 180, 0.363);
+}
+
+.wrap-with-btns__button:active {
+    background: rgba(146, 145, 145, 0.493);
+}
