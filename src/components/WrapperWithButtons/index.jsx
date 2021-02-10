@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 
 import './style.css';
 
-const WrapperWithButtons = ({ children, buttons }) => {
+import ActionsBar from '../ActionsBar';
+
+const WrapperWithButtons = ({ children, buttons, hasToolbar }) => {
     return (<div className='wrap-with-btns'>
-        <div className='wrap-with-btns__buttons'>{ 
-            buttons.map((btn, index) => <button
-                 onClick={btn.action}
-                 key={index}
-                 className='wrap-with-btns__button'>{ 
-                    btn.content 
-                }</button>)
-        }</div>
+        <div className={'wrap-with-btns__buttons' + (hasToolbar ? ' wrap-with-btns__toolbar' : '')}>
+            <ActionsBar isReverse={hasToolbar} buttons={buttons} />
+        </div>
         <div className='wrap-with-btns__content'>{ children }</div>
     </div>);
 }
@@ -22,11 +19,13 @@ WrapperWithButtons.propTypes = {
     buttons: PropTypes.arrayOf(PropTypes.exact({
         content: PropTypes.node.isRequired,
         action: PropTypes.func.isRequired
-    }))
+    })),
+    hasToolbar: PropTypes.bool
 }
 
 WrapperWithButtons.defaultProps = {
-    buttons: []
+    buttons: [],
+    hasToolbar: false
 }
 
 export default WrapperWithButtons;

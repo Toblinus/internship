@@ -1,0 +1,34 @@
+.action-bar-btn {
+    display: block;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 0;
+}
+
+.action-bar-btn_mode_primary {
+    background: transparent;
+    color: black;
+}
+
+.action-bar-btn_mode_primary:hover {
+    background: rgba(180, 180, 180, 0.363);
+}
+
+.action-bar-btn_mode_primary:active {
+    background: rgba(146, 145, 145, 0.493);
+}
+
+.action-bar-btn_mode_destructive {
+    background: transparent;
+    color: red;
+}
+
+.action-bar-btn_mode_destructive:hover {
+    background: rgba(180, 108, 108, 0.363);
+}
+
+.action-bar-btn_mode_destructive:active {
+    background: rgba(121, 83, 83, 0.493);
+}

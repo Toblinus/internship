@@ -1,0 +1,9 @@
+.action-bar {
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+}
+
+.action-bar_reverse {
+    flex-direction: row-reverse;
+}
