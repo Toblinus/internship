@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import PopoutWrapper from '../PopoutWrapper'
-import ActionBar, { buttonPropTypes } from '../ActionsBar';
+import PopoutWrapper from '../../PopoutWrapper'
+import ActionBar, { buttonPropTypes } from '../../ActionsBar';
 
 import './style.css';
 
@@ -14,9 +14,9 @@ const ModalBase = ({ onCancel, children, actions }) => {
             <div className='modal-base__main'>
                 { children }
             </div>
-            {actions.length && <div className='modal-base__footer'>
+            {actions.length ? (<div className={'modal-base__footer'}>
                 <ActionBar buttons={actions} />
-            </div>}
+            </div>) : null}
         </div>
     </PopoutWrapper>
 }

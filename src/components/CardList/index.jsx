@@ -7,16 +7,21 @@ import Card from '../Card';
 import WrapperWithButtons from '../WrapperWithButtons';
 import joinClasses from '../../helpers/joinClasses';
 
-const CardList = ({ header, tasks, className, tasksButtons }) => {
+const CardList = ({ header, tasks, className, tasksButtons, onTaskClick }) => {
     return (<div className={joinClasses("card-list", className)}>
         {header && <p className="card-list__header">{ header }</p>}
         <div className="card-list__content">
-            { tasks.map((args, index) => (<div className="card-list__item">
-                <WrapperWithButtons buttons={ tasksButtons.map(btn => ({ 
+            { tasks.map((args, index) => (<div key={index}  className="card-list__item">
+                <WrapperWithButtons  buttons={ tasksButtons.map(btn => ({ 
                     content: btn.content,
                     action: () => btn.action?.(index) 
                 }))} >
-                    <Card key={index} {...args} />
+                    <Card {...args} onClick={
+                        (typeof onTaskClick === 'function') ?
+                            () => {
+                                onTaskClick(args, index)
+                            } : null
+                    } />
                 </WrapperWithButtons>
             </div>))}
         </div>
@@ -45,7 +50,8 @@ CardList.propTypes = {
             content: PropTypes.node,
             action: PropTypes.func
         })
-    )
+    ),
+    onTaskClick: PropTypes.func
 }
 
 CardList.defaultProps = {

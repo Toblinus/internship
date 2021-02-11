@@ -1,0 +1,26 @@
+
+.modal-form-field {
+    width: 100%;
+    display: flex;    
+}
+
+.modal-form-field.v {
+    flex-direction: column;
+}
+
+.modal-form-field.h {
+    flex-direction: row;
+}
+
+.modal-form-field__title {
+    white-space: nowrap;   
+}
+
+.modal-form-field__input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-form-field.h .modal-form-field__title {
+    margin-right: .7rem;
+}

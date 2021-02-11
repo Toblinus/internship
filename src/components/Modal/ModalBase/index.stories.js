@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from './index';
 
 export default {
-    title: 'Trello/ModalBase',
+    title: 'Trello/Modal/Base',
     component: Modal
 }
 

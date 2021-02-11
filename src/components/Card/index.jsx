@@ -4,9 +4,14 @@ import './style.css';
 
 import joinClasses from '../../helpers/joinClasses';
 
-const Card = ({ header, text, className }) => {
+const Card = ({ header, text, className, onClick }) => {
     const maxLen = 300;
-    return (<div className={joinClasses('card', className)}>
+    return (<div className={joinClasses('card', className)} onClick={(event) => {
+        event.stopPropagation();
+        if(typeof onClick === 'function') {
+            onClick(event);
+        }
+    }}>
         {header && <p className='card__header'>{ header }</p>}
         {text && <p className='card__text'>{ 
             text.length > maxLen ?  (text.substr(0, maxLen) + '...') : text
@@ -14,7 +19,7 @@ const Card = ({ header, text, className }) => {
     </div>)
 }
 
-Card.propTypes = {
+export const CardPropTypes = {
     /**
      * Заголовок задачи
      */
@@ -22,7 +27,9 @@ Card.propTypes = {
     /**
      * Текст задачи
      */
-    text: PropTypes.string
+    text: PropTypes.string,
+    onClick: PropTypes.func
 }
 
+Card.propTypes = CardPropTypes;
 export default Card;
