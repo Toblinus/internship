@@ -3,6 +3,7 @@ import WrapperWithButtons from "./components/WrapperWithButtons";
 import Board from "./components/Board";
 import CardList from "./components/CardList";
 import { SimpleModalForm } from './components/Modal';
+import SortingElement from './components/SortingElement';
 
 const boardValue = JSON.parse(
     localStorage.getItem('board-value')
@@ -33,6 +34,41 @@ function App() {
         <ModalForm fields={fields} onOk={onOk} allowReset={allowReset} />
     );
 
+    const getIndexById = (id, arr) => {
+        for(let i = 0; i < arr.length; ++i){
+            if(!arr[i]) continue;
+
+            if(arr[i].id === id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    const moveCard = (listId, hoverId, dragId) => {
+
+    }
+
+    const moveCol = (hoverId, dragId) => {
+        if(hoverId === dragId) return;
+        // const indexHover = getIndexById(hoverId, cols);
+        // const indexDrag = getIndexById(dragId, cols);
+
+        const indexHover = hoverId;
+        const indexDrag = dragId;
+
+        const minIndex = Math.min(indexHover, indexDrag);
+        const maxIndex = Math.max(indexHover, indexDrag);
+
+        setCol([
+            ...cols.slice(0, minIndex),
+            cols[maxIndex],
+            ...cols.slice(minIndex + 1, maxIndex),
+            cols[minIndex],
+            ...cols.slice(maxIndex + 1)
+        ])
+    }
+
     return (<div className='app'>
         { modal }
         <WrapperWithButtons
@@ -46,6 +82,7 @@ function App() {
                         }], ({ colName }) => {
                         setCol([...cols, {
                             title: colName,
+                            id: Date.now(),
                             tasks: []
                         }]);
                     })
@@ -54,90 +91,98 @@ function App() {
             ]}
         >
         <Board>
-            { cols.map( (col, index) => <WrapperWithButtons
-                    buttons={[
-                        {
-                            content: '+',
-                            action: () => {
-                                showModal([
-                                    {
-                                        title: 'Заголовок задачи',
-                                        name: 'header'
-                                    }, {
-                                        title: 'Описание',
-                                        name: 'text',
-                                        type: 'multiline'
-                                    }
-                                ], (task) => {
-                                    const newCols = [...cols];
-                                    newCols[index].tasks.push(task)
-                                    setCol(newCols);
-                                })
-                            }
-                        },
-                        {
-                            content: 'Р',
-                            action: () => {
-                                const newCols = [...cols];
-                                showModal(
-                                    [{
-                                        title: 'Название колонки',
-                                        name: 'colName',
-                                        value: newCols[index].title
-                                    }],
-                                    ({ colName }) => {
-                                        newCols[index].title = colName;
-                                        setCol(newCols);
-                                    }
-                                );
-                                
-                            }
-                        },
-                        {
-                            content: 'x',
-                            action: () => {
-                                const newCols = [...cols];
-                                newCols.splice(index, 1);
-                                setCol(newCols);
-                            }
-                        },
-                    ]} 
-                    key={index} 
-                >
-                <CardList
-                    header={col.title} 
-                    tasks={col.tasks}
-                    onTaskClick={({ header, text }, taskIndex) => {
-                        showModal([
+            { cols.map( (col, index) => col && <SortingElement
+                key={col.id}
+                move={moveCol}
+                id={index}
+            >
+                <WrapperWithButtons
+                        buttons={[
                             {
-                                title: 'Заголовок задачи',
-                                name: 'header',
-                                value: header
-                            }, {
-                                title: 'Описание',
-                                name: 'text',
-                                type: 'multiline',
-                                value: text
-                            }
-                        ], (task) => {
-                            const newCols = [...cols];
-                            newCols[index].tasks[taskIndex] = task;
-                            setCol(newCols);
-                        })
-                    }}
-                    tasksButtons={[
-                        {
-                            content: 'x',
-                            action: (idx) => {
-                                const newTasks = [...col.tasks];
-                                newTasks.splice(idx, 1);
+                                content: '+',
+                                action: () => {
+                                    showModal([
+                                        {
+                                            title: 'Заголовок задачи',
+                                            name: 'header'
+                                        }, {
+                                            title: 'Описание',
+                                            name: 'text',
+                                            type: 'multiline'
+                                        }
+                                    ], (task) => {
+                                        const newCols = [...cols];
+                                        task.id = Date.now();
+                                        newCols[index].tasks.push(task)
+                                        setCol(newCols);
+                                    })
+                                }
+                            },
+                            {
+                                content: 'Р',
+                                action: () => {
+                                    const newCols = [...cols];
+                                    showModal(
+                                        [{
+                                            title: 'Название колонки',
+                                            name: 'colName',
+                                            value: newCols[index].title
+                                        }],
+                                        ({ colName }) => {
+                                            newCols[index].title = colName;
+                                            setCol(newCols);
+                                        }
+                                    );
+                                    
+                                }
+                            },
+                            {
+                                content: 'x',
+                                action: () => {
+                                    const newCols = [...cols];
+                                    newCols.splice(index, 1);
+                                    setCol(newCols);
+                                }
+                            },
+                        ]} 
+                         
+                    >
+                    <CardList
+                        header={col.title} 
+                        tasks={col.tasks}
+                        onTaskClick={({ header, text }, taskIndex) => {
+                            showModal([
+                                {
+                                    title: 'Заголовок задачи',
+                                    name: 'header',
+                                    value: header
+                                }, {
+                                    title: 'Описание',
+                                    name: 'text',
+                                    type: 'multiline',
+                                    value: text
+                                }
+                            ], (task) => {
                                 const newCols = [...cols];
-                                newCols[index].tasks = newTasks;
+                                newCols[index].tasks[taskIndex] = task;
                                 setCol(newCols);
+                            })
+                        }}
+                        tasksButtons={[
+                            {
+                                content: 'x',
+                                action: (idx) => {
+                                    const newTasks = [...col.tasks];
+                                    newTasks.splice(idx, 1);
+                                    const newCols = [...cols];
+                                    newCols[index].tasks = newTasks;
+                                    setCol(newCols);
+                                }
                             }
-                        }
-                    ]} />
-            </WrapperWithButtons> ) }
+                        ]} />
+                </WrapperWithButtons> 
+                
+            </SortingElement>) }
         </Board>
     </WrapperWithButtons>
     </div>);

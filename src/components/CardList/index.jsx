@@ -3,30 +3,39 @@ import PropTypes from 'prop-types';
 
 import './style.css';
 
-import Card from '../Card';
+import Card, { CardPropTypes } from '../Card';
 import WrapperWithButtons from '../WrapperWithButtons';
 import joinClasses from '../../helpers/joinClasses';
+import SortingElement from '../SortingElement';
 
 const CardList = ({ header, tasks, className, tasksButtons, onTaskClick }) => {
-    return (<div className={joinClasses("card-list", className)}>
+    return (<div 
+            className={joinClasses("card-list", className)}
+        >
         {header && <p className="card-list__header">{ header }</p>}
         <div className="card-list__content">
             { tasks.map((args, index) => (<div key={index}  className="card-list__item">
-                <WrapperWithButtons  buttons={ tasksButtons.map(btn => ({ 
-                    content: btn.content,
-                    action: () => btn.action?.(index) 
-                }))} >
-                    <Card {...args} onClick={
-                        (typeof onTaskClick === 'function') ?
-                            () => {
-                                onTaskClick(args, index)
-                            } : null
-                    } />
-                </WrapperWithButtons>
+                <SortingElement id={args.id}>
+                    <WrapperWithButtons  buttons={ tasksButtons.map(btn => ({ 
+                        content: btn.content,
+                        action: () => btn.action?.(index) 
+                    }))} >
+                            <Card {...args} onClick={
+                                (typeof onTaskClick === 'function') ?
+                                    () => {
+                                        onTaskClick(args, index)
+                                    } : null
+                            } />
+                    </WrapperWithButtons>
+                </SortingElement>
             </div>))}
         </div>
     </div>);
 }
+
+const cardPropTypes = {...CardPropTypes};
+delete cardPropTypes.onClick;
+cardPropTypes.id = PropTypes.number.isRequired;
 
 CardList.propTypes = {
     /** 
@@ -38,8 +47,7 @@ CardList.propTypes = {
      */
     tasks: PropTypes.arrayOf(
         PropTypes.exact({
-            header: PropTypes.string.isRequired,
-            text: PropTypes.string
+            ...cardPropTypes
         })
     ),
     /**

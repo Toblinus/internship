@@ -4,9 +4,12 @@ import './style.css';
 
 import joinClasses from '../../helpers/joinClasses';
 
-const Card = ({ header, text, className, onClick }) => {
+const Card = ({ header, text, className, onClick}) => {
     const maxLen = 300;
-    return (<div className={joinClasses('card', className)} onClick={(event) => {
+
+    return (<div
+        className={joinClasses('card', className)} 
+        onClick={(event) => {
         event.stopPropagation();
         if(typeof onClick === 'function') {
             onClick(event);
@@ -28,7 +31,8 @@ export const CardPropTypes = {
      * Текст задачи
      */
     text: PropTypes.string,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    date: PropTypes.instanceOf(Date)
 }
 
 Card.propTypes = CardPropTypes;
