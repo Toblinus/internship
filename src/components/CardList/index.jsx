@@ -8,14 +8,14 @@ import WrapperWithButtons from '../WrapperWithButtons';
 import joinClasses from '../../helpers/joinClasses';
 import SortingElement from '../SortingElement';
 
-const CardList = ({ header, tasks, className, tasksButtons, onTaskClick }) => {
+const CardList = ({ header, tasks, className, tasksButtons, onTaskClick, swapTasks, id }) => {
     return (<div 
             className={joinClasses("card-list", className)}
         >
         {header && <p className="card-list__header">{ header }</p>}
         <div className="card-list__content">
-            { tasks.map((args, index) => (<div key={index}  className="card-list__item">
-                <SortingElement id={args.id}>
+            { tasks.map((args, index) => (args && <div key={args.id}  className="card-list__item">
+                <SortingElement id={index} move={swapTasks}>
                     <WrapperWithButtons  buttons={ tasksButtons.map(btn => ({ 
                         content: btn.content,
                         action: () => btn.action?.(index) 
@@ -59,7 +59,8 @@ CardList.propTypes = {
             action: PropTypes.func
         })
     ),
-    onTaskClick: PropTypes.func
+    onTaskClick: PropTypes.func,
+    swapTasks: PropTypes.func
 }
 
 CardList.defaultProps = {

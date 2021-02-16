@@ -34,25 +34,32 @@ function App() {
         <ModalForm fields={fields} onOk={onOk} allowReset={allowReset} />
     );
 
-    const getIndexById = (id, arr) => {
-        for(let i = 0; i < arr.length; ++i){
-            if(!arr[i]) continue;
-
-            if(arr[i].id === id) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     const moveCard = (listId, hoverId, dragId) => {
+        if(hoverId === dragId) return;
+        const tcols = [...cols];
+        let ntasks = [...tcols[listId].tasks];
 
+        
+        const indexHover = hoverId;
+        const indexDrag = dragId;
+        
+        const minIndex = Math.min(indexHover, indexDrag);
+        const maxIndex = Math.max(indexHover, indexDrag);
+        
+        ntasks = [
+            ...ntasks.slice(0, minIndex),
+            ntasks[maxIndex],
+            ...ntasks.slice(minIndex + 1, maxIndex),
+            ntasks[minIndex],
+            ...ntasks.slice(maxIndex + 1)
+        ]
+    
+        tcols[listId].tasks = ntasks;
+        setCol(tcols);
     }
 
     const moveCol = (hoverId, dragId) => {
         if(hoverId === dragId) return;
-        // const indexHover = getIndexById(hoverId, cols);
-        // const indexDrag = getIndexById(dragId, cols);
 
         const indexHover = hoverId;
         const indexDrag = dragId;
@@ -168,6 +175,7 @@ function App() {
                                 setCol(newCols);
                             })
                         }}
+                        swapTasks={moveCard.bind({}, index)}
                         tasksButtons={[
                             {
                                 content: 'x',

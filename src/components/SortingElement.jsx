@@ -63,7 +63,7 @@ const SortingElement = ({ children, id, move }) => {
 SortingElement.propTypes = {
     children: PropTypes.element.isRequired,
     id: PropTypes.number.isRequired,
-    move: PropTypes.func.isRequired,
+    move: PropTypes.func.isRequired
 }
 
 export default SortingElement;
