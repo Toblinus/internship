@@ -16,7 +16,9 @@ const SimpleModalForm = ({ onOk, onCansel, allowReset, fields }) => {
             action: () => {
                 const values = {};
                 ref.current?.forEach((elm, index) => {
-                    values[fields[index].name] = elm.value;
+                    values[fields[index].name] = (
+                        elm.type !== 'checkbox' && elm.type !== 'radio'
+                    ) ? elm.value : elm.checked;
                 });
                 onOk(values);
             }
@@ -52,6 +54,7 @@ const SimpleModalForm = ({ onOk, onCansel, allowReset, fields }) => {
                 key={field.name}
                 type = { field.type }
                 defaultValue = { field.value }
+                defaultChecked = { field.checked }
                 refProp = { ref } 
             />)    
         }

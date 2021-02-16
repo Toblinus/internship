@@ -3,8 +3,12 @@ import PropTypes from 'prop-types';
 
 import './style.css';
 
+const alwaysH = (type) => {
+    return (type === 'checkbox') || (type === 'radio')
+}
+
 const ModalFormField = ({ title, refProp, type, ...args }) => {
-    const [ isV, setIsV ] = useState(true);
+    const [ isV, setIsV ] = useState(false);
     const refFunc = useCallback((node) => {
         if(node === null){
             return;
@@ -25,7 +29,7 @@ const ModalFormField = ({ title, refProp, type, ...args }) => {
         })
     }, [ refProp ]);
 
-    return (<div className={`modal-form-field ${isV ? 'v' : 'h'}`}>
+    return (<div className={`modal-form-field ${isV && !alwaysH(type) ? 'v' : 'h'}`}>
         <span className='modal-form-field__title'>{ title }</span>
         {
             type === 'multiline' ? (
@@ -36,7 +40,7 @@ const ModalFormField = ({ title, refProp, type, ...args }) => {
                 />
             ) : (
                 <input
-                    className='modal-form-field__input'
+                    className={'modal-form-field__input' + alwaysH(type) ? ' ah' : ''}
                     type={type} 
                     { ...args } 
                     ref={ refFunc } 

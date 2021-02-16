@@ -4,6 +4,7 @@ import Board from "./components/Board";
 import CardList from "./components/CardList";
 import { SimpleModalForm } from './components/Modal';
 import SortingElement from './components/SortingElement';
+import getNowDate from './helpers/getNowDate';
 
 const boardValue = JSON.parse(
     localStorage.getItem('board-value')
@@ -33,6 +34,46 @@ function App() {
     const showModal = (fields, onOk, allowReset) => setModal(
         <ModalForm fields={fields} onOk={onOk} allowReset={allowReset} />
     );
+    
+    const editTaskMoval = (callback, { 
+            header = "", 
+            text = "", 
+            date = getNowDate(),
+            isChecked = false 
+        } = {}) => {
+    showModal([
+            {
+                title: 'Заголовок задачи',
+                name: 'header',
+                value: header
+            }, {
+                title: 'Описание',
+                name: 'text',
+                type: 'multiline',
+                value: text
+            }, {
+                title: 'Дата',
+                name: 'date',
+                type: 'date',
+                value: date
+            }, {
+                title: 'Выполнено',
+                name: 'isChecked',
+                type: 'checkbox',
+                checked: isChecked
+            }
+        ], callback)
+    }
+
+    const editColModal = (callback, header = "") => {
+        showModal([
+            {
+                title: 'Название колонки',
+                name: 'colName',
+                value: header
+            }
+        ], callback)
+    }
 
     const moveCard = (listId, hoverId, dragId) => {
         if(hoverId === dragId) return;
@@ -83,17 +124,15 @@ function App() {
             buttons={[
                 {
                     content: '+',
-                    action: () => showModal([{
-                            title: 'Название колонки',
-                            name: 'colName'
-                        }], ({ colName }) => {
-                        setCol([...cols, {
-                            title: colName,
-                            id: Date.now(),
-                            tasks: []
-                        }]);
-                    })
-                    
+                    action: () => editColModal(
+                        ({ colName }) => {
+                            setCol([...cols, {
+                                title: colName,
+                                id: Date.now(),
+                                tasks: []
+                            }])
+                        }
+                    )                   
                 }
             ]}
         >
@@ -107,38 +146,22 @@ function App() {
                         buttons={[
                             {
                                 content: '+',
-                                action: () => {
-                                    showModal([
-                                        {
-                                            title: 'Заголовок задачи',
-                                            name: 'header'
-                                        }, {
-                                            title: 'Описание',
-                                            name: 'text',
-                                            type: 'multiline'
-                                        }
-                                    ], (task) => {
-                                        const newCols = [...cols];
-                                        task.id = Date.now();
-                                        newCols[index].tasks.push(task)
-                                        setCol(newCols);
-                                    })
-                                }
+                                action: () => editTaskMoval((task) => {
+                                    const newCols = [...cols];
+                                    task.id = Date.now();
+                                    newCols[index].tasks.push(task)
+                                    setCol(newCols);
+                                })
                             },
                             {
                                 content: 'Р',
                                 action: () => {
                                     const newCols = [...cols];
-                                    showModal(
-                                        [{
-                                            title: 'Название колонки',
-                                            name: 'colName',
-                                            value: newCols[index].title
-                                        }],
+                                    editColModal(
                                         ({ colName }) => {
                                             newCols[index].title = colName;
                                             setCol(newCols);
-                                        }
+                                        }, newCols[index].title
                                     );
                                     
                                 }
@@ -157,23 +180,15 @@ function App() {
                     <CardList
                         header={col.title} 
                         tasks={col.tasks}
-                        onTaskClick={({ header, text }, taskIndex) => {
-                            showModal([
-                                {
-                                    title: 'Заголовок задачи',
-                                    name: 'header',
-                                    value: header
-                                }, {
-                                    title: 'Описание',
-                                    name: 'text',
-                                    type: 'multiline',
-                                    value: text
-                                }
-                            ], (task) => {
+                        onTaskClick={(oldTask, taskIndex) => {
+                            editTaskMoval((task) => {
                                 const newCols = [...cols];
-                                newCols[index].tasks[taskIndex] = task;
+                                newCols[index].tasks[taskIndex] = {
+                                    ...task, 
+                                    id: newCols[index].tasks[taskIndex].id
+                                };
                                 setCol(newCols);
-                            })
+                            }, oldTask);
                         }}
                         swapTasks={moveCard.bind({}, index)}
                         tasksButtons={[

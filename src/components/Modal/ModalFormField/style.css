@@ -24,3 +24,7 @@
 .modal-form-field.h .modal-form-field__title {
     margin-right: .7rem;
 }
+
+.modal-form-field.ah {
+    width: max-content;
+}

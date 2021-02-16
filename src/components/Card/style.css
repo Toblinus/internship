@@ -34,7 +34,13 @@
     overflow: hidden;
 }
 
-.card__text:nth-child(2) {
+.card__date {
+    border-top: 1px dotted #8080803d;
+    margin-top: .7rem;
+    padding-top: .5rem;
+}
+
+.card > p:nth-child(2) {
     padding-top: 1rem;
     margin-top: .5rem;
     border-top: 1px solid #8080803d;

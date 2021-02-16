@@ -6,16 +6,18 @@ import './style.css';
 import Card, { CardPropTypes } from '../Card';
 import WrapperWithButtons from '../WrapperWithButtons';
 import joinClasses from '../../helpers/joinClasses';
-import SortingElement from '../SortingElement';
+// import SortingElement from '../SortingElement';
 
-const CardList = ({ header, tasks, className, tasksButtons, onTaskClick, swapTasks, id }) => {
+const CardList = ({ header, tasks, className, tasksButtons, onTaskClick, swapTasks }) => {
     return (<div 
             className={joinClasses("card-list", className)}
         >
         {header && <p className="card-list__header">{ header }</p>}
         <div className="card-list__content">
-            { tasks.map((args, index) => (args && <div key={args.id}  className="card-list__item">
-                <SortingElement id={index} move={swapTasks}>
+            { tasks.map((args, index) => (args && <div 
+                style={{opacity: args.isChecked ? .4 : 1}}
+                key={args.id}  
+                className="card-list__item">
                     <WrapperWithButtons  buttons={ tasksButtons.map(btn => ({ 
                         content: btn.content,
                         action: () => btn.action?.(index) 
@@ -27,7 +29,9 @@ const CardList = ({ header, tasks, className, tasksButtons, onTaskClick, swapTas
                                     } : null
                             } />
                     </WrapperWithButtons>
-                </SortingElement>
+                {/* <SortingElement id={index} move={swapTasks}>
+                   
+                </SortingElement> */}
             </div>))}
         </div>
     </div>);
