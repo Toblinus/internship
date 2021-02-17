@@ -5,7 +5,7 @@ const joinClasses = (major, ...minors) => {
             result += ` ${minors[i]}`;
         }
     }
-    return result;
+    return result.trimLeft(' ');
 }
 
 export default joinClasses;
