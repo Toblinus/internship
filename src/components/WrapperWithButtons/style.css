@@ -20,3 +20,14 @@
     padding: 2px;
     border-bottom: 1px solid #44444493;
 }
+
+.wrap-with-btns__toolbar .wrap-with-btns__button {
+    border: 1px solid #44444493;
+    border-radius: 4px;
+}
+.wrap-with-btns__toolbar .wrap-with-btns__button:hover {
+    transform: scale(1.1);
+}
+.wrap-with-btns__toolbar .wrap-with-btns__button:active {
+    transform: scale(.9);
+}

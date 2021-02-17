@@ -4,12 +4,13 @@ import './style.css';
 
 import ActionBarBtn, { themes } from './ActionBarBtn';
 
-const ActionBar = ({ isReverse, buttons }) => {
+const ActionBar = ({ isReverse, buttons, btnClassName }) => {
     return (<div className={'action-bar' + (isReverse ? ' action-bar_reverse' : '')}>{ 
         buttons.map((btn, index) => <ActionBarBtn
-             onClick={btn.action}
-             key={index}
-             theme={btn.mode} >{ 
+            className={btnClassName}
+            onClick={btn.action}
+            key={index}
+            theme={btn.mode} >{ 
                 btn.content 
             }</ActionBarBtn>)
     }</div>);
@@ -25,11 +26,13 @@ export const buttonPropTypes = PropTypes.arrayOf(
 
 ActionBar.propTypes = {
     isReverse: PropTypes.bool,
-    buttons: buttonPropTypes
+    buttons: buttonPropTypes,
+    btnClassName: PropTypes.string
 }
 
 ActionBar.defaultProps = {
-    isReverse: true
+    isReverse: true,
+    btnClassName: ''
 }
 
 export default ActionBar;

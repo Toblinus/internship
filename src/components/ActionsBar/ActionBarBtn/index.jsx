@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import joinClasses from '../../../helpers/joinClasses';
 import './style.css';
 
-const ActionBarBtn = ({ children, onClick, theme }) => {
+const ActionBarBtn = ({ children, onClick, theme, className }) => {
     return (<button
         onClick={onClick}
-        className={`action-bar-btn action-bar-btn_mode_${theme}`}
+        className={joinClasses(
+            'action-bar-btn', 
+            `action-bar-btn_mode_${theme}`,
+            className)}
     >{ 
         children 
     }</button>);

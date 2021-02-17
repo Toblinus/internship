@@ -6,6 +6,8 @@ import { SimpleModalForm } from './components/Modal';
 import SortingElement from './components/SortingElement';
 import getNowDate from './helpers/getNowDate';
 
+import imgEdit from './imgs/edit.png';
+
 const boardValue = JSON.parse(
     localStorage.getItem('board-value')
 ) || [];
@@ -36,8 +38,8 @@ function App() {
     );
     
     const editTaskMoval = (callback, { 
-            header = "", 
-            text = "", 
+            header = '', 
+            text = '', 
             date = getNowDate(),
             isChecked = false 
         } = {}) => {
@@ -65,7 +67,7 @@ function App() {
         ], callback)
     }
 
-    const editColModal = (callback, header = "") => {
+    const editColModal = (callback, header = '') => {
         showModal([
             {
                 title: 'Название колонки',
@@ -154,7 +156,9 @@ function App() {
                                 })
                             },
                             {
-                                content: 'Р',
+                                content: (
+                                    <img src={imgEdit} alt='Р' />
+                                ),
                                 action: () => {
                                     const newCols = [...cols];
                                     editColModal(
@@ -168,6 +172,7 @@ function App() {
                             },
                             {
                                 content: 'x',
+                                mode:'destructive',
                                 action: () => {
                                     const newCols = [...cols];
                                     newCols.splice(index, 1);
@@ -194,6 +199,7 @@ function App() {
                         tasksButtons={[
                             {
                                 content: 'x',
+                                mode:'destructive',
                                 action: (idx) => {
                                     const newTasks = [...col.tasks];
                                     newTasks.splice(idx, 1);

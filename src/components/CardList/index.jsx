@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import './style.css';
 
 import Card, { CardPropTypes } from '../Card';
-import WrapperWithButtons from '../WrapperWithButtons';
+import WrapperWithButtons, { buttonPropTypes } from '../WrapperWithButtons';
 import joinClasses from '../../helpers/joinClasses';
-// import SortingElement from '../SortingElement';
 
 const CardList = ({ header, tasks, className, tasksButtons, onTaskClick, swapTasks }) => {
     return (<div 
@@ -19,7 +18,7 @@ const CardList = ({ header, tasks, className, tasksButtons, onTaskClick, swapTas
                 key={args.id}  
                 className="card-list__item">
                     <WrapperWithButtons  buttons={ tasksButtons.map(btn => ({ 
-                        content: btn.content,
+                        ...btn,
                         action: () => btn.action?.(index) 
                     }))} >
                             <Card {...args} onClick={
@@ -29,9 +28,6 @@ const CardList = ({ header, tasks, className, tasksButtons, onTaskClick, swapTas
                                     } : null
                             } />
                     </WrapperWithButtons>
-                {/* <SortingElement id={index} move={swapTasks}>
-                   
-                </SortingElement> */}
             </div>))}
         </div>
     </div>);
@@ -57,12 +53,7 @@ CardList.propTypes = {
     /**
      * Список кнопок, отбражаемых на карточках
      */
-    tasksButtons: PropTypes.arrayOf(
-        PropTypes.exact({
-            content: PropTypes.node,
-            action: PropTypes.func
-        })
-    ),
+    tasksButtons: buttonPropTypes,
     onTaskClick: PropTypes.func,
     swapTasks: PropTypes.func
 }

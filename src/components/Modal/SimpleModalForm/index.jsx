@@ -10,18 +10,20 @@ const SimpleModalForm = ({ onOk, onCansel, allowReset, fields }) => {
     const actions = [];
     const ref = useRef();
 
+    const funcOk = () => {
+        const values = {};
+        ref.current?.forEach((elm, index) => {
+            values[fields[index].name] = (
+                elm.type !== 'checkbox' && elm.type !== 'radio'
+            ) ? elm.value : elm.checked;
+        });
+        onOk(values);
+    }
+
     if(typeof onOk === 'function') {
         actions.push({
             content: 'OK',
-            action: () => {
-                const values = {};
-                ref.current?.forEach((elm, index) => {
-                    values[fields[index].name] = (
-                        elm.type !== 'checkbox' && elm.type !== 'radio'
-                    ) ? elm.value : elm.checked;
-                });
-                onOk(values);
-            }
+            action: funcOk
         })
     }
 
@@ -53,6 +55,11 @@ const SimpleModalForm = ({ onOk, onCansel, allowReset, fields }) => {
                 title = { field.title }
                 key={field.name}
                 type = { field.type }
+                onKeyUp = {(event) => {
+                   if(event.code === 'Enter') {
+                        funcOk();
+                   }
+                }}
                 defaultValue = { field.value }
                 defaultChecked = { field.checked }
                 refProp = { ref } 
@@ -62,16 +69,26 @@ const SimpleModalForm = ({ onOk, onCansel, allowReset, fields }) => {
     </ModalForm>);
 }
 
+const fieldBase = {
+    title: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string,
+}
+
 SimpleModalForm.propTypes = {
     onOk: PropTypes.func.isRequired,
     onCansel: PropTypes.func.isRequired,
     allowReset: PropTypes.bool,
-    fields: PropTypes.arrayOf(PropTypes.exact({
-        title: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string,
-        value: PropTypes.any
-    }))
+    fields: PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.exact({
+            ...fieldBase,
+            checked: PropTypes.bool
+        }), 
+        PropTypes.exact({
+            ...fieldBase,
+            value: PropTypes.any
+        })]
+    ))
 }
 
 SimpleModalForm.defaultProps = {

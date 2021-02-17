@@ -68,7 +68,8 @@ export const CardPropTypes = {
      */
     text: PropTypes.string,
     onClick: PropTypes.func,
-    date: PropTypes.string
+    date: PropTypes.string,
+    isChecked: PropTypes.bool
 }
 
 Card.propTypes = CardPropTypes;
