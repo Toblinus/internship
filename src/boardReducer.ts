@@ -1,7 +1,11 @@
 const initialState = [];
 
 export enum BoardActionType {
-
+    add_column,
+    remove_column,
+    edit_column,
+    swap_column,
+    
 }
 
 export interface IBoardAction {
