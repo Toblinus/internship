@@ -13,6 +13,7 @@
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
     "redux": "^4.0.5",
+    "typescript": "^4.2.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -21,7 +22,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sb": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "chromatic": "npx chromatic --project-token 6563ed27cbbd"
   },
   "eslintConfig": {
     "extends": [
@@ -44,11 +46,12 @@
   "devDependencies": {
     "@storybook/addon-actions": "^6.1.17",
     "@storybook/addon-controls": "^6.1.17",
-    "@storybook/addon-essentials": "^6.1.17",
+    "@storybook/addon-essentials": "^6.1.20",
     "@storybook/addon-links": "^6.1.17",
     "@storybook/node-logger": "^6.1.17",
     "@storybook/preset-create-react-app": "^3.1.5",
-    "@storybook/react": "^6.1.17",
+    "@storybook/react": "^6.1.20",
+    "chromatic": "^5.6.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6"
   }

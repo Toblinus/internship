@@ -1,4 +1,4 @@
-const initialState = [];
+const initialState: never[] = [];
 
 export enum BoardActionType {
     add_column,
