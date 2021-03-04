@@ -5,23 +5,24 @@ import CardList from "./components/CardList";
 import { SimpleModalForm } from './components/Modal';
 import SortingElement from './components/SortingElement';
 import getNowDate from './helpers/getNowDate';
+import { ItemTypes } from './Constants';
+
 
 import imgEdit from './imgs/edit.png';
+
+import Task from './data/Task';
+
+const task = new Task('title', 'desc', new Date(2021, 2, 3));
+console.log(task);
+console.log(task.getTimeLeft());
 
 const boardValue = JSON.parse(
     localStorage.getItem('board-value')
 ) || [];
 
 function App() {
-
-    const [ cols, setColValue ] = useState(boardValue);
     const [ modal, setModal ] = useState();
     const hideModal = () => setModal(null);
-    
-    const setCol = (newCols) => {
-        localStorage.setItem('board-value', JSON.stringify(newCols));
-        setColValue(newCols);
-    }
 
     const ModalForm = ({ onOk, fields, allowReset }) => (<SimpleModalForm
         fields={ fields }
@@ -77,46 +78,55 @@ function App() {
         ], callback)
     }
 
-    const moveCard = (listId, hoverId, dragId) => {
-        if(hoverId === dragId) return;
-        const tcols = [...cols];
-        let ntasks = [...tcols[listId].tasks];
-
-        
-        const indexHover = hoverId;
-        const indexDrag = dragId;
-        
-        const minIndex = Math.min(indexHover, indexDrag);
-        const maxIndex = Math.max(indexHover, indexDrag);
-        
-        ntasks = [
-            ...ntasks.slice(0, minIndex),
-            ntasks[maxIndex],
-            ...ntasks.slice(minIndex + 1, maxIndex),
-            ntasks[minIndex],
-            ...ntasks.slice(maxIndex + 1)
-        ]
     
-        tcols[listId].tasks = ntasks;
-        setCol(tcols);
-    }
-
-    const moveCol = (hoverId, dragId) => {
+    
+    const [tasks, setTasks] = useState([]);
+    const [groups, setGropus] = useState([]);
+    
+    const findIndexById = (id, map) => {
+        for(let i = 0; i < map.length; i++) {
+            if(map[i].id === id) return i;
+        }
+        return -1;
+    }   
+    
+    const moveGroup = (hoverId, dragId) => {
+        console.log('drag group');
         if(hoverId === dragId) return;
-
-        const indexHover = hoverId;
-        const indexDrag = dragId;
-
+        
+        const indexHover = findIndexById(hoverId, groups);
+        const indexDrag = findIndexById(dragId, groups);
+        
         const minIndex = Math.min(indexHover, indexDrag);
         const maxIndex = Math.max(indexHover, indexDrag);
-
-        setCol([
-            ...cols.slice(0, minIndex),
-            cols[maxIndex],
-            ...cols.slice(minIndex + 1, maxIndex),
-            cols[minIndex],
-            ...cols.slice(maxIndex + 1)
+        
+        setGropus([
+            ...groups.slice(0, minIndex),
+            groups[maxIndex],
+            ...groups.slice(minIndex + 1, maxIndex),
+            groups[minIndex],
+            ...groups.slice(maxIndex + 1)
         ])
+    }
+    
+    const moveTask = (hoverId, dragId) => {
+        console.log('drag task', hoverId, dragId);
+        if(hoverId === dragId) return;
+        
+        const indexHover = findIndexById(hoverId, tasks);
+        const indexDrag = findIndexById(dragId, tasks);
+
+        const hoverTask = tasks[indexHover];
+        const dragTask = tasks[indexDrag];
+
+        const newTasks = [...tasks];
+
+        if(hoverTask.groupId !== dragTask.groupId) {
+            newTasks[indexDrag].groupId = hoverTask.groupId;
+        }
+
+
+        setTasks(newTasks);
     }
 
     return (<div className='app'>
@@ -128,92 +138,83 @@ function App() {
                     content: '+',
                     action: () => editColModal(
                         ({ colName }) => {
-                            setCol([...cols, {
-                                title: colName,
-                                id: Date.now(),
-                                tasks: []
+                            setGropus([...groups, {
+                                header: colName,
+                                id: Date.now()
                             }])
                         }
                     )                   
                 }
             ]}
         >
-        <Board>
-            { cols.map( (col, index) => col && <SortingElement
-                key={col.id}
-                move={moveCol}
-                id={index}
-            >
-                <WrapperWithButtons
-                        buttons={[
-                            {
-                                content: '+',
-                                action: () => editTaskMoval((task) => {
-                                    const newCols = [...cols];
-                                    task.id = Date.now();
-                                    newCols[index].tasks.push(task)
-                                    setCol(newCols);
-                                })
-                            },
-                            {
-                                content: (
-                                    <img src={imgEdit} alt='Р' />
-                                ),
-                                action: () => {
-                                    const newCols = [...cols];
-                                    editColModal(
-                                        ({ colName }) => {
-                                            newCols[index].title = colName;
-                                            setCol(newCols);
-                                        }, newCols[index].title
-                                    );
-                                    
-                                }
-                            },
-                            {
-                                content: 'x',
-                                mode:'destructive',
-                                action: () => {
-                                    const newCols = [...cols];
-                                    newCols.splice(index, 1);
-                                    setCol(newCols);
-                                }
-                            },
-                        ]} 
-                         
+            <Board>
+                {groups.map( ({ header, id }, index) => <SortingElement
+                        key={id}
+                        move={moveGroup}
+                        id={id}
+                        type={ItemTypes.COLUMN}
                     >
-                    <CardList
-                        header={col.title} 
-                        tasks={col.tasks}
-                        onTaskClick={(oldTask, taskIndex) => {
-                            editTaskMoval((task) => {
-                                const newCols = [...cols];
-                                newCols[index].tasks[taskIndex] = {
-                                    ...task, 
-                                    id: newCols[index].tasks[taskIndex].id
-                                };
-                                setCol(newCols);
-                            }, oldTask);
-                        }}
-                        swapTasks={moveCard.bind({}, index)}
+                    <WrapperWithButtons
+                                buttons={[
+                                    {
+                                        content: '+',
+                                        action: () => editTaskMoval((task) => {
+                                            task.id = Date.now();
+                                            task.groupId = id;
+                                            setTasks([...tasks, task])
+                                        })
+                                    },
+                                    {
+                                        content: (
+                                            <img src={imgEdit} alt='Р' />
+                                        ),
+                                        action: () => {
+                                            editColModal(
+                                                ({ colName }) => {
+                                                    const newCols = [...groups];
+                                                    newCols[index].header = colName;
+                                                    setGropus(newCols);
+                                                }, header
+                                            );
+                                            
+                                        }
+                                    },
+                                    {
+                                        content: 'x',
+                                        mode:'destructive',
+                                        action: () => {
+                                            const newCols = [...groups];
+                                            newCols.splice(index, 1);
+                                            setGropus(newCols);
+                                        }
+                                    },
+                                ]} 
+                                
+                            ><CardList
+                        header={header}
+                        swapTasks={moveTask}
+                        tasks={tasks.filter(task => task.groupId === id).map(task => {
+                            const newTask = {...task};
+                            delete newTask.groupId;
+                            return newTask;
+                        })}
                         tasksButtons={[
                             {
                                 content: 'x',
                                 mode:'destructive',
                                 action: (idx) => {
-                                    const newTasks = [...col.tasks];
-                                    newTasks.splice(idx, 1);
-                                    const newCols = [...cols];
-                                    newCols[index].tasks = newTasks;
-                                    setCol(newCols);
+                                    const newTasks = [...tasks];
+                                    const indexTask = findIndexById(idx, tasks);
+                                    newTasks.splice(indexTask, 1);
+                                    setTasks(newTasks);
                                 }
                             }
-                        ]} />
-                </WrapperWithButtons> 
-                
-            </SortingElement>) }
-        </Board>
-    </WrapperWithButtons>
+                        ]} 
+                    />
+                    </WrapperWithButtons>
+                </SortingElement>)}
+            </Board>
+        </WrapperWithButtons>
     </div>);
 }
 

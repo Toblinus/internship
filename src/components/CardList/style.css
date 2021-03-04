@@ -21,3 +21,10 @@
 .card-list__content:nth-child(2) {
     margin-top: .8rem;
 }
+
+.card-list__content.empty {
+    min-height: 100px;
+    background-color: rgb(255 255 255 / 45%);
+    border: 1px dotted #808080b9;
+    border-radius: 7px;
+}
