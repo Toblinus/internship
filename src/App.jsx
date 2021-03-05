@@ -11,14 +11,16 @@ import { ItemTypes } from './Constants';
 import imgEdit from './imgs/edit.png';
 
 import Task from './data/Task';
+import { seconds2ShortDate } from './helpers/DateConverter';
 
-const task = new Task('title', 'desc', new Date(2021, 2, 3));
+const task = new Task('title', 'desc', new Date(2021, 2, 3, 23, 59, 59, 999+1));
 console.log(task);
 console.log(task.getTimeLeft());
+console.log(seconds2ShortDate(task.getTimeLeft()))
 
-const boardValue = JSON.parse(
-    localStorage.getItem('board-value')
-) || [];
+// const boardValue = JSON.parse(
+//     localStorage.getItem('board-value')
+// ) || [];
 
 function App() {
     const [ modal, setModal ] = useState();

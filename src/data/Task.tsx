@@ -32,7 +32,11 @@ export default class Task {
      * Get time left value in seconds
      */
     getTimeLeft(): number {
-        const timeLeft = this.date.getTime() - (new Date()).getTime();
+        const now = new Date();
+        now.setHours(this.date.getHours());
+        now.setMinutes(this.date.getMinutes());
+        now.setSeconds(this.date.getSeconds());
+        const timeLeft = this.date.getTime() - now.getTime();
         return Math.ceil((timeLeft) / 1000);
     }
 }
