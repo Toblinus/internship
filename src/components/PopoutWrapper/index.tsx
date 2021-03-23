@@ -5,19 +5,15 @@ import joinClasses from '../../helpers/joinClasses';
 
 import './style.css';
 
-const PopoutWrapper = ({ children, onClick, className }) => {
+export type Props = {
+    className?: string;
+    children: JSX.Element;
+    onClick?: () => void;
+}
+
+const PopoutWrapper: React.FC<Props> = ({ children, onClick = () => {}, className = '' }) => {
     return (<div className={joinClasses('popout-wrapper', className)} onClick={onClick} >
         { children }
     </div>);
 }
-
-PopoutWrapper.propTypes = {
-    children: PropTypes.node,
-    onClick: PropTypes.func,
-}
-
-PopoutWrapper.defaultProps = {
-    onClick: () => {}
-}
-
 export default PopoutWrapper;

@@ -1,9 +1,16 @@
-import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { useDrag, useDrop } from 'react-dnd';
+import React, { RefObject, useRef } from 'react';
+import { useDrag, useDrop, XYCoord } from 'react-dnd';
 
-const SortingElement = ({ children, id, move, type, allowDropRefs }) => {
-    const ref = useRef(null);
+export type Props = {
+    children: JSX.Element;
+    id: number;
+    move: (a: number, b: number) => void;
+    type: string;
+    allowDropRefs: any[]
+};
+
+const SortingElement: React.FC<Props> = ({ children, id, move, type, allowDropRefs }) => {
+    const ref = useRef<HTMLDivElement>(null);
     
     const [{ opacity }, drag] = useDrag({
         item: { type, id },
@@ -16,7 +23,7 @@ const SortingElement = ({ children, id, move, type, allowDropRefs }) => {
     
     const [, drop] = useDrop({
         accept: type, 
-        hover: (item, monitor) => {
+        hover: (item: {id: number, type: string}, monitor) => {
             if (!ref.current) {
                 return;
             }
@@ -28,14 +35,14 @@ const SortingElement = ({ children, id, move, type, allowDropRefs }) => {
                 return;
             }
             
-            const hoverBoundingRect = ref.current?.getBoundingClientRect();
+            const hoverBoundingRect = ref.current?.getBoundingClientRect()
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
             const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
             
             const clientOffset = monitor.getClientOffset();
             
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-            const hoverClientX = clientOffset.X - hoverBoundingRect.right;
+            const hoverClientY = (clientOffset as XYCoord).x - hoverBoundingRect.top;
+            const hoverClientX = (clientOffset as XYCoord).y - hoverBoundingRect.right;
             
             
             if (dragIndex < hoverIndex && (hoverClientY < hoverMiddleY || hoverClientX > hoverMiddleX)) {
@@ -53,9 +60,11 @@ const SortingElement = ({ children, id, move, type, allowDropRefs }) => {
     
     drag(drop(ref));
     React.useEffect(() => {
-        for(let i = 0; i < allowDropRefs.length; i++) {
+        if(!Array.isArray(allowDropRefs)){
+            return;
+        }
+        for(let i = 0; i < (allowDropRefs.length || 0); i++) {
             allowDropRefs[i] = drop(allowDropRefs[i]);
-            console.log(allowDropRefs[i]);
         }
     }, [allowDropRefs, drop]);
     
@@ -65,18 +74,6 @@ const SortingElement = ({ children, id, move, type, allowDropRefs }) => {
         >
             { children }
     </div>);
-}
-
-SortingElement.propTypes = {
-    children: PropTypes.element.isRequired,
-    id: PropTypes.number.isRequired,
-    move: PropTypes.func.isRequired,
-    type: PropTypes.string.isRequired,
-    allowDropRefs: PropTypes.array
-}
-
-SortingElement.defaultProps = {
-    allowDropRefs: []
 }
 
 export default SortingElement;

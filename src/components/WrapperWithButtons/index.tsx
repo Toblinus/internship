@@ -1,11 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import './style.css';
 
 import ActionsBar, { buttonPropTypes as btnTypes } from '../ActionsBar';
 
-const WrapperWithButtons = ({ children, buttons, hasToolbar }) => {
+export type Props = {
+    children: JSX.Element,
+    buttons: btnTypes,
+    hasToolbar?: boolean
+};
+
+const WrapperWithButtons: React.FC<Props> = ({ children, buttons, hasToolbar = false }) => {
     return (<div className='wrap-with-btns'>
         <div className={'wrap-with-btns__buttons' + (hasToolbar ? ' wrap-with-btns__toolbar' : '')}>
             <ActionsBar 
@@ -18,16 +23,5 @@ const WrapperWithButtons = ({ children, buttons, hasToolbar }) => {
     </div>);
 }
 
-WrapperWithButtons.propTypes = {
-    children: PropTypes.element.isRequired,
-    buttons: btnTypes,
-    hasToolbar: PropTypes.bool
-}
-
-WrapperWithButtons.defaultProps = {
-    buttons: [],
-    hasToolbar: false
-}
-
-export const buttonPropTypes = btnTypes;
+export type buttonPropTypes = btnTypes;
 export default WrapperWithButtons;

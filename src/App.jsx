@@ -13,10 +13,10 @@ import imgEdit from './imgs/edit.png';
 import Task from './data/Task';
 import { seconds2ShortDate } from './helpers/DateConverter';
 
-const task = new Task('title', 'desc', new Date(2021, 2, 3, 23, 59, 59, 999+1));
-console.log(task);
-console.log(task.getTimeLeft());
-console.log(seconds2ShortDate(task.getTimeLeft()))
+// const task = new Task('title', 'desc', new Date(2021, 2, 3, 23, 59, 59, 999+1));
+// console.log(task);
+// console.log(task.getTimeLeft());
+// console.log(seconds2ShortDate(task.getTimeLeft()))
 
 // const boardValue = JSON.parse(
 //     localStorage.getItem('board-value')
@@ -194,6 +194,25 @@ function App() {
                                 
                             ><CardList
                         header={header}
+                        onTaskClick={(task, id) => editTaskMoval((newTask) => {
+                            newTask.id = id;
+                            let index = -1;
+                            tasks.find((item, ind) => {
+                                if(item.id !== id) return false;
+                                
+                                index = ind;
+                                return true;
+                            });
+                            
+                            if(index < 0) {
+                                return;
+                            }
+                            
+                            const newTasks = [...tasks];
+                            newTask.groupId = newTasks[index].groupId;
+                            newTasks[index] = newTask;
+                            setTasks(newTasks)
+                        }, task)}
                         swapTasks={moveTask}
                         tasks={tasks.filter(task => task.groupId === id).map(task => {
                             const newTask = {...task};

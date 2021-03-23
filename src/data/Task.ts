@@ -5,11 +5,13 @@ export default class Task {
      * @param {string} title
      * @param {string} description
      * @param {Date} date Deadline for the task
+     * @param {boolean} isChecked
      */
     constructor(
         private title: string,
         private description: string,
-        private date: Date
+        private date: Date,
+        private isChecked: boolean
     ){}
     
     /**
@@ -17,15 +19,18 @@ export default class Task {
      * @param task The task for swap with this task
      */
     swap(task: Task): void {
-        const { title, description, date } = task;
+        const { title, description, date, isChecked } = task;
 
         task.title = this.title;
         task.description = this.description;
         task.date = this.date;
+        task.isChecked = this.isChecked;
+
 
         this.title = title;
         this.description = description;
         this.date = date;
+        this.isChecked = isChecked;
     }
 
     /**
